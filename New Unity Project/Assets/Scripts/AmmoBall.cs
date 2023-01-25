@@ -6,7 +6,8 @@ public class AmmoBall : MonoBehaviour
 {
     public float speed;
     public int damage;
-    public Vector3 Direction;
+    private float lifetime = 5;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,29 @@ public class AmmoBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += Direction * speed;
+        transform.position += transform.forward * (speed * Time.deltaTime);
+        CountToDissapear();
+        MakeBigger();
+    }
+
+    private void CountToDissapear()
+    {
+        lifetime -=Time.deltaTime;
+        if(lifetime <=0 )
+        {
+            DissapearBullet();
+        }
+    }
+    private void DissapearBullet()
+    {
+        Destroy(gameObject);
+    }
+
+    private void MakeBigger()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            transform.localScale += Vector3.one * Time.deltaTime;
+        }
     }
 }

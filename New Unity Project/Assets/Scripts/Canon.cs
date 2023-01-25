@@ -16,11 +16,13 @@ public class Canon : MonoBehaviour
 
     private void Update()
     {
-        
+        //shootKeyCode para seleccionar la letra desde unity
+        //Aca disparamos 2 veces
         if (Input.GetKeyDown(shootKeyCode))
         {
             Shoot();
         }
+     
     }
 
     private void Shoot()
@@ -28,6 +30,7 @@ public class Canon : MonoBehaviour
         Instantiate(ball, PointOfShoot);
         Debug.Log("Shoot");
     }
+
  
 }
  
