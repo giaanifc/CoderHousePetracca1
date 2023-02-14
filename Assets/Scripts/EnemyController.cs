@@ -10,6 +10,13 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float distanceToPlayer;
     [SerializeField] private float rotationspeed;
+    [SerializeField] private Transform eyesTransform;
+    [SerializeField] private float maxDistance;
+    [SerializeField] LayerMask visionStop;
+    [SerializeField] LayerMask playerLayer;
+    
+    [SerializeField] private float timeTofollow = 2;
+    public float currentTime;
     void Start()
     {
         
@@ -49,13 +56,32 @@ public class EnemyController : MonoBehaviour
         var distance = VectorToPlayer.magnitude;
         //transform.LookAt(player);
         var mirar = Quaternion.LookRotation(player.position - transform.position);
-        transform.rotation = Quaternion.Lerp(transform.rotation, mirar, Time.deltaTime * rotationspeed);
-        if (distance > distanceToPlayer)   //si la distancia del vector al jugador es mayor a la distancia que indiquemos, lo persigue
-        {
-            transform.position += VectorToPlayer.normalized * (speed * Time.deltaTime);  //seguimos al player, agarrando el transform y le sumamos la distancia al player normailzado
-        }
+        
+        
+        RaycastHit hit;
+        var collisionplayer = Physics.Raycast(eyesTransform.position, transform.forward, out hit, maxDistance, playerLayer);
        
-    }
+        if (collisionplayer || timeTofollow >= 0)
+        {
+            transform.position += VectorToPlayer.normalized * (speed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, mirar, Time.deltaTime * rotationspeed);
+        }
+         
+
+        /* if (distance > distanceToPlayer)   //si la distancia del vector al jugador es mayor a la distancia que indiquemos, lo persigue
+          {
+                transform.position += VectorToPlayer.normalized * (speed * Time.deltaTime);  //seguimos al player, agarrando el transform y le sumamos la distancia al player normailzado
+                
+               if (collisionplayer)
+            {
+                Debug.Log(message: "player enontraod");
+            }
+           }
+        */
+       
+
+
+        }
 
    
 
@@ -63,9 +89,16 @@ public class EnemyController : MonoBehaviour
     {
         var mirar = Quaternion.LookRotation(player.position - transform.position);
         transform.rotation = Quaternion.Lerp(transform.rotation, mirar, Time.deltaTime * rotationspeed);
+        RaycastHit hit;
+        var collisionplayer = Physics.Raycast(eyesTransform.position, transform.forward, out hit, maxDistance, playerLayer);
+        if (collisionplayer)
+        {
+
+        }
+            
     }
 
-    /*private void OnControllerColliderHit(ControllerColliderHit hit)
+      /*private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.collider.gameObject.CompareTag("Player"))
         {
@@ -74,4 +107,15 @@ public class EnemyController : MonoBehaviour
         }
     }
     */
-}
+    /* void EnemyPlayerHit()
+    {
+        RaycastHit hit;
+        var collisionplayer = Physics.Raycast(eyesTransform.position, transform.forward , out hit, maxDistance, playerLayer );
+        if (collisionplayer)
+        {
+            Debug.Log(message: "meolgpie");
+        }
+        else { Debug.Log(message: "imnot being hittd"); }
+    */}
+
+

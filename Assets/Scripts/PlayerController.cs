@@ -11,13 +11,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float horizontalMouseSpeed;
     [SerializeField] private float verticalMouseSpeed;
-    [SerializeField] private float healamount;
-
+    [SerializeField] private int pointstoadd;
 
     Animator anim;
     void Start()
     {
         anim = GetComponent<Animator>();
+        
+        
     }
 
     // Update is called once per frame
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
         Movement();
         MouseView();
         AttackEnemy();
+        ChangeScore(pointstoadd);
     }
     private void Movement()
     {
@@ -56,12 +58,15 @@ public class PlayerController : MonoBehaviour
             anim.Play("Attack01");
         }
     }
-    private void OnTriggerEnter(Collider other)
+   
+    private void ChangeScore(int pointstoadd)
     {
-        if (other.gameObject.tag == "Heal" && other.GetComponent<healscript>())
+        if (Input.GetKeyDown(KeyCode.M))
         {
-            Debug.Log(message: "must heal");
-            HealthMethod(healamount);
+            GameManager.instanciateGameManager.ScoreManager(pointstoadd);
         }
+           
     }
+    
+
 }
